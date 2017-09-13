@@ -1,0 +1,76 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.akhikhl.gretty'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+   compile ("org.springframework.data:spring-data-redis:1.8.6.RELEASE") {
+		exclude group: "org.slf4j", module: 'slf4j-api'
+		exclude group: "org.slf4j", module: 'jcl-over-slf4j'
+	}
+	compile group: 'biz.paluch.redis', name: 'lettuce', version: '4.2.1.Final'
+	
+	compile "org.springframework:spring-webmvc:4.3.4.RELEASE",
+			"org.springframework.security:spring-security-config:4.2.0.RELEASE",
+			"org.springframework.security:spring-security-web:4.2.0.RELEASE",
+			"com.fasterxml.jackson.core:jackson-databind:2.6.5",
+			"org.webjars:bootstrap:2.3.2",
+			"org.webjars:webjars-taglib:0.3"
+
+	compile group: 'org.webjars', name: 'webjars-locator', version: '0.32'
+	compile group: 'org.webjars', name: 'jquery', version: '3.1.1'
+	
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile group: 'org.springframework.session', name: 'spring-session-jdbc', version: '1.3.1.RELEASE'
+	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.2.2'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.2'
+	
+	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+	compile group: 'org.apache.taglibs', name: 'taglibs-standard-impl', version: '1.2.1'
+	compile group: 'jstl', name: 'jstl', version: '1.2'
+	
+	compile ('log4j:log4j:1.2.17')
+	testCompile "junit:junit:4.12"
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+gretty {
+	httpPort = 8088
+	contextPath = '/multiuser-session'
+	// ... many more properties
+}
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	
+	dependencies {
+		classpath 'org.akhikhl.gretty:gretty:+'
+	}
+}
